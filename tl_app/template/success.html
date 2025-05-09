@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Gallery</title>
+</head>
+<body>
+    <div class="background-wrapper">
+    <img src="{% static 'img/qubit.png' %}" class="logo">
+    
+    <div class="name-phno" id="chatIdModal">
+        <div class="modal-content">
+            <h1 class="text-cred">Sign up</h1>
+            <form method="POST" action="{% url 'login' %}" id="signupForm">
+                {% csrf_token %}
+                <h4 class="user-text">username</h4>
+                <input type="text" name="username" value="{{ request.session.username|default:'' }}" id="nameInput" required>
+                <h4 class="chat-id-text">phone number</h4>
+                <input type="text" name="phno" value="{{ request.session.phno|default:'' }}" id="chatIdInput" required>
+                
+                {% if form.errors %}
+                <div class="error-messages">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <button type="submit" class="crud-btn">submit</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    
+    <div id="infoCarousel" class="carousel">
+        <div class="carousel-slides-container">
+            <!-- Slide 1 -->
+            <div class="carousel-slide active">
+                <div class="info-content">
+                    <div class="info-image-container">
+                        <img src="{% static 'img/img(1).png' %}" class="info-image">
+                    </div>
+                    <div class="info-text">
+                        <span>🔔</span>&nbspfirst enter your phone number via &nbsp<a href="https://t.me/qubitlogin_bot" target="_blank">qubit_bot</a>&nbsp as text chat
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+                <div class="info-content">
+                    <div class="info-image-container">
+                        <img src="{% static 'img/image(4).webp' %}" class="info-image">
+                    </div>
+                    <div class="info-text">
+                        after entering your credentials, you're ready to go 🚀.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Controls -->
+        <div class="carousel-nav">
+            <button onclick="prevSlide()" class="nav-btn prev-btn">‹</button>
+            <div class="carousel-indicators">
+                <span class="indicator active"></span>
+                <span class="indicator"></span>
+            </div>
+            <button onclick="nextSlide()" id="nextButton" class="nav-btn next-btn">›</button>
+            <button onclick="endCarousel()" id="startButton" class="end-btn" style="display: none;">go</button>
+        </div>
+    </div>
+    
+    <script src="{% static 'js/login.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,698 @@
+body {
+    background: url('/static/img/image(3).webp') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+    margin: 0;
+    justify-content: center;
+    overflow: hidden;
+    background-color: rgba(9, 0, 0, 0.64); /* Matches your Figma: #090000 @ 64% */
+
+}
+
+.logout-button{
+    position: absolute;
+    top: 5%;
+    right: 3%;
+}
+
+.logout-button button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 7px;
+    margin-top: 20px;
+    padding: 10px 7px 10px 7px ;
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+.name-phno {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+.name-phno .modal-content {
+    background-color: #222020;
+    color: white;
+    display: flex;
+    width: 275px;
+    height: 35%;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 13px;
+    padding: 20px 16px 25px 16px;
+}
+
+.name-phno .modal-content input{
+    width: 82%;
+    height: 25px;
+    border-radius: 5.78px;
+    border: none;
+    padding-left:10px;
+    font-weight: 800;
+    background-color: rgb(238, 236, 236);
+}
+
+.name-phno .modal-content input:focus{
+    border-color:transparent;
+    outline: none;
+}
+.name-phno .modal-content .text-cred{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    position: relative;
+    right: 23%;
+}
+.name-phno .modal-content .chat-id-text{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    position: relative;
+    right: 27.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name-phno .modal-content .user-text{
+    margin-bottom: 0px;
+    position: relative;
+    right: 28%;
+}
+
+.name-phno .modal-content .crud-btn{
+    color: white;
+    background-color: #3f3d3d;
+    border-radius: 7px;
+    padding: 6.25px;
+    border: none;
+    width: 50%;
+    font-size: 15px;
+    font-weight: 800;
+    margin-top: 13.5px;
+}
+
+.name-phno .modal-content .crud-btn:hover{
+    color: white;
+    background-color: #009dff;
+}
+
+.name-phno .modal-content .icon-info{
+    height: 17.5px;
+    width: 17.5px;
+}
+
+.logo{
+    position: absolute;
+    top: 5%;
+    left: 3%;
+    height:px;
+    width: 60px;
+    border-radius: 5px;
+}
+
+.main-div .username {
+    display: none;
+    position: absolute;
+    top: 11.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: black;
+    border-radius: 999px; /* fully rounded pill */
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    height: auto;
+    width: auto;
+}
+
+.username .user-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.main-div img{
+    height: 25px;
+    width: 25px;
+}
+
+.main-div .username span {
+    font-size: 17.5px;
+    font-weight:689;
+}
+
+.main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45vw;
+}
+
+.submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    border: none;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 29px;
+    margin-top: 20px;
+    padding: 9px 15px 9px 15px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    transition:color 0.3;
+}
+
+
+.submit:hover{
+    background-color: rgb(60, 60, 60);
+    color: white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal .modal-content {
+    background-color:#222020;
+    padding:20px 20px 13px 20px;
+    color:white;
+    border-radius: 17px;
+    width: 265px;
+    text-align: center;
+    position: relative;
+}
+
+.modal .modal-content .upload-name{
+    position:absolute;
+    left:10%;
+    font-size: 28px;
+}
+
+.modal .modal-content .drop-area .file-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 👈 Align contents to the left */
+    font-weight: 800;
+    border: none;
+    font-size: 17.5px;
+    border-radius: 10px;
+    background-color: #555655;
+    color: white;
+    width: 100%;
+    height: 35px;
+    margin-top: 22px;
+    padding-left:12.5px;
+    gap: 10px; /* 👈 spacing between icon and text */
+}
+
+.modal .modal-content .drop-area .file-btn:hover{
+    cursor: pointer;
+}
+
+.modal .modal-content .upload-submit{
+    border: none;
+    width: 50%;
+    padding: 6px;
+    border-radius: 6.83px;
+    margin-top: 5%;
+    background: #555655;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.modal .modal-content .drop-area .drag-text{
+    margin-bottom: -3px;
+    margin-top: 43px;
+}
+
+.modal .modal-content .upload-submit:hover{
+    background: rgb(51, 166, 51);
+}
+
+.modal .modal-content .drop-area img{
+    height: 27px;
+    width: 27px;
+}
+
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.drop-area {
+    border:none;
+    border-radius: 10px;
+    padding:10px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    margin-top: 20px;
+    background-color: #5b5959;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.drop-area.highlight {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px dashed white;
+}
+
+.icon-button-container {
+    position: absolute;
+    left:3%;
+    top: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.icon-button {
+    position: relative;
+    background-color: white;
+    border-radius: 50%;
+    padding: 3.4px;
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.icon-button img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+
+
+.icon-button .label {
+    position: absolute;
+    left: 55px;
+    white-space: nowrap;
+    background-color: white;
+    color: black;
+    padding: 6px 9px;
+    border-radius: 90px;
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.2s ease 0.1s;
+    pointer-events: none;
+}
+
+.icon-button:hover .label {
+    opacity: 1;
+    
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: none;
+    z-index: 999;
+}
+
+
+.info-icon {
+    cursor: pointer;
+    font-size: 17px;
+    margin-left: 8px;
+}
+
+.info-carousel {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-content {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 12px;
+    height: 38%;
+    width: 30%;
+    max-width: 600px;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.carousel-content img {
+    max-width: 100%;
+    height: auto;
+    display: none;
+}
+
+.carousel-content img.active {
+    display: block;
+}
+
+.carousel-buttons {
+    position: relative;
+    top: 80%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.carousel-buttons button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.carousel-buttons button:hover {
+    background-color: #009dff;
+}
+
+.close-carousel {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* Add this to your existing CSS file */
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    min-width: 250px;
+    max-width: 350px;
+    z-index: 999;
+    display: none;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.notification.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.notification-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.notification-close {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.progress-container {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    height: 8px;
+    margin: 8px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: #009dff;
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 5px;
+}
+
+.notification-text {
+    margin-top: 8px;
+    font-weight: normal;
+}
+
+.notification.success {
+    background-color: rgba(40, 167, 69, 0.9);
+}
+
+.notification.error {
+    background-color: rgba(220, 53, 69, 0.9);
+}
+
+.notification-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.success-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.success-icon:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    border-left: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    transform: rotate(-45deg);
+    top: 40%;
+    left: 25%;
+}
+
+.error-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.error-icon:before, .error-icon:after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 16px;
+    background-color: #fff;
+    top: 2px;
+    left: 9px;
+}
+
+.error-icon:before {
+    transform: rotate(45deg);
+}
+
+.error-icon:after {
+    transform: rotate(-45deg);
+}
+
+.selected-files-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+.file-btn {
+    position: relative;
+}
+
+.multi-file-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 10px;
+}
+
+/* Additional styles for file upload UI */
+.selected-files-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+/* Progress bar enhancements */
+.notification.show {
+    display: block;
+    animation: slide-up 0.4s ease;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.notification.progress {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #2196F3;
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+}
+
+.progress-bar.complete {
+    background-color: #4CAF50;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.notification-title {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.notification-close {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.notification-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.success-icon {
+    color: #fff;
+    font-size: 16px;
+}
+
+.error-icon {
+    color: #fff;
+    font-size: 16px;
+}
+
+.info-icon {
+    color: #555;
+    font-size: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slide-up {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}

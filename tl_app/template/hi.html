@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+    <link rel="stylesheet" href="{% static 'css/hi.css' %}">
+</head>
+<body>
+    <!-- Chat ID Modal -->
+    <div class="name-phno" id="chatIdModal">
+        <div class="modal-content">
+            <h1 class="text-cred">Sign up</h1>
+            <form method="POST" action="{% url 'login' %}" id="signupForm">
+                {% csrf_token %}
+                <h4 class="user-text">username</h4>
+                <input type="text" name="username" value="{{ request.session.username|default:'' }}" id="nameInput">
+                <h4 class="chat-id-text">phone number<span class="info-icon" onclick="showInfoCarousel()"><img src="{% static 'img/info.svg' %}" style="width: 20px; height: 20px;" class="icon-info"></span></h4>
+                <input type="text" name="phno" value="{{ request.session.phno|default:'' }}" id="chatIdInput">
+                <button type="button" onclick="submitChatId()" class="crud-btn">submit</button>
+            </form>
+        </div>
+    </div>
+    
+    
+    <img src="{% static 'img/qubit.png' %}" class="logo">
+    
+    <div class="main-div">
+        <div class="username">
+            <img class="user-logo" src="{% static 'img/whale.jpeg' %}" alt="User Profile">
+            <span>{% if request.session.username %}hey {{ request.session.username }}!{% else %}hey!{% endif %}</span>
+        </div>
+        <button type="button" class="submit" onclick="showUploadDialog()"><img src="{% static 'img/up.svg' %}">upload</button>
+    </div>
+    
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideUploadDialog()">&times;</span>
+            <span class="upload-name">upload</span>
+            
+            <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" id="uploadForm">
+                {% csrf_token %}
+                <input type="hidden" name="username" id="hiddenUsername" value="{{ request.session.username|default:'' }}">
+                <input type="hidden" name="phno" id="hiddenPhno" value="{{ request.session.phno|default:'' }}">
+                
+                <div class="drop-area" id="dropArea">
+                    <button type="button" onclick="document.getElementById('fileInput').click()" class="file-btn">
+                        <img src="{% static 'img/file.svg' %}">
+                        <span class="btn-text">files</span>
+                    </button>
+                    <button type="button" onclick="document.getElementById('folderInput').click()" class="file-btn">
+                        <img src="{% static 'img/folder.svg' %}">
+                        <span class="btn-text">folder</span>
+                    </button>
+                    <p class="drag-text">or drag files here!</p>
+                    <input type="file" name="file_field" id="fileInput" multiple hidden>
+                    <input type="file" name="folder_field" id="folderInput" webkitdirectory directory hidden>
+                    <div class="selected-files-info" id="selectedFilesInfo"></div>
+                </div>
+                
+                <button type="submit" class="upload-submit">submit</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="icon-button-container">
+        <div class="icon-button">
+            <img src="{% static 'img/icon(26).svg' %}" alt="Settings">
+            <span class="label">faq</span>
+        </div>
+        <div class="icon-button">
+            <img src="{% static 'img/whale.jpeg' %}" alt="User">
+            <span class="label">user</span>
+        </div>
+        {% if request.session.username %}
+        <div class="icon-button">
+            <a href="{% url 'logout' %}" class="logout-button">
+                <svg width="98%" height="98%" viewBox="-1.5 0.75 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 8L22 12M22 12L18 16M22 12H9M15 4.20404C13.7252 3.43827 12.2452 3 10.6667 3C5.8802 3 2 7.02944 2 12C2 16.9706 5.8802 21 10.6667 21C12.2452 21 13.7252 20.5617 15 19.796" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="label">log out</span> 
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="notification" id="notification">
+        {% if message %}
+            {{ message }}
+        {% else %}
+            <div class="notification-header">
+                <div class="notification-title"><span class="info-icon">i</span> Notification</div>
+                <span class="notification-close">&times;</span>
+            </div>
+            <div class="notification-text">No files uploaded yet</div>
+        {% endif %}
+    </div>
+    
+    <script src="{% static 'js/hi.js' %}"></script>
+</body>
+</html>
