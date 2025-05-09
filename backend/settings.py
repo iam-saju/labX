@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'tl_app',
     'corsheaders',
     'csp',
-    'social_django',
 ]
 
 MIDDLEWARE = [
