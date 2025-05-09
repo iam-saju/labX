@@ -1,1 +1,1 @@
-web: gunicorn backend.wsgi:application
+web: DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:application
