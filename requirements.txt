@@ -36,3 +36,4 @@ typing_extensions==4.13.2
 urllib3==2.4.0
 uvicorn==0.34.1
 whitenoise==6.9.0
+python-dotenv
