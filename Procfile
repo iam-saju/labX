@@ -1,1 +1,1 @@
-web: DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:application
+web: DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:applicatioweb: python manage.py collectstatic --noinput && DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:application

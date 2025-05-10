@@ -31,7 +31,8 @@ load_dotenv(os.path.join(BASE_DIR, 'cred.env'))
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['qubit.up.railway.app', '.railway.app', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
@@ -145,24 +146,19 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Static files settings
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'tl_app/static'),
-]
+
+# This is where collectstatic will collect all static files for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'tl_app','static'),
+]
+
+
 keys={}
-
-def loadkeys(file_path):
-    with open(file_path,'r') as file:
-        content=file.read().strip().split('\n\n')
-        for entry in content:
-            lines=entry.splitlines()
-            key_name=lines[0].split(':')[0].strip()
-            key_value='\n'.join(lines[1:]).strip()
-            keys[key_name]=key_value
-    return keys
-
 
 SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
 
@@ -174,36 +170,8 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000
 #github oAUTH
 
 
-X_FRAME_OPTIONS = 'ALLOW-FROM https://oauth.telegram.org'
-
-# Content Security Policy Settings (django-csp 4.0+ format)
-CONTENT_SECURITY_POLICY = {
-    'DIRECTIVES': {
-        'default-src': ["'self'"],
-        'script-src': [
-            "'self'",
-            "'unsafe-inline'",  # Try removing this later and replacing with nonce
-            'https://telegram.org',
-            'https://oauth.telegram.org'
-        ],
-        'frame-src': [
-            'https://telegram.org',
-            'https://oauth.telegram.org'
-        ],
-        'frame-ancestors': [
-            "'self'",
-            'https://oauth.telegram.org'
-        ],
-        'connect-src': [
-            "'self'",
-            'https://telegram.org',
-            'https://oauth.telegram.org'
-        ],
-        'img-src': [
-            "'self'",
-            'data:',
-            'https://telegram.org',
-            'https://oauth.telegram.org'
-        ]
-    }
-}
+# Production security settings
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
