@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,7 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+WHITENOISE_ROOT = None
 
 CORS_ALLOW_ALL_ORIGINS = True 
 
@@ -158,6 +160,7 @@ STATICFILES_DIRS = [
 ]
 
 
+
 SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
 
 
@@ -174,5 +177,8 @@ SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Add to the end of settings.py
-MIDDLEWARE.append('django.contrib.staticfiles.middleware.StaticFilesMiddleware')
+# Fallback for static files in case the directory doesn't exist
+if not os.path.exists(STATIC_ROOT):
+    import tempfile
+    STATIC_ROOT = tempfile.gettempdir()
+    print(f"Warning: Using temporary directory for static files: {STATIC_ROOT}")
