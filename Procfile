@@ -1,1 +1,1 @@
-web: export STATIC_ROOT=/backend/staticfiles && mkdir -p $STATIC_ROOT && python manage.py collectstatic --noinput && DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:application
+web: export STATIC_ROOT=/app/staticfiles && mkdir -p $STATIC_ROOT && chmod -R 755 $STATIC_ROOT && python manage.py collectstatic --noinput && DJANGO_SETTINGS_MODULE=backend.settings gunicorn backend.wsgi:application
