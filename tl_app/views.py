@@ -13,8 +13,6 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import logging
-logger = logging.getLogger(__name__)
 
 threads = []
 count=0
@@ -26,49 +24,29 @@ def login(request):
         if form.is_valid():
             phno = form.cleaned_data['phno']
             username = request.POST.get('username')
-            logger.info(f"Form valid: Username={username}, Phone={phno}")
+            # Debug output
+            print(f"Form valid: Username={username}, Phone={phno}")
+            result=check_chat_id(phno)
+            if result['status']:
+                token=result['chat_id']
 
-            try:
-                logger.info("Attempting check_chat_id...")
-                result = check_chat_id(phno)
-                logger.info(f"check_chat_id returned: {result}")
-            except Exception as e:
-                logger.error(f"Exception caught during check_chat_id call in login view: {e}", exc_info=True)
-                # Depending on how critical this is, you might want to render an error page
-                messages.error(request, "An error occurred during phone number verification.")
-                return render(request, 'success.html', {'form': form})
-
-
-            if result and result.get('status'):
-                token = result.get('chat_id')
-
-                try:
-                    logger.info("Attempting to set session variables...")
-                    request.session['username'] = username
-                    request.session['phno'] = phno
-                    request.session['token'] = token
-                    logger.info("Session variables set successfully.")
-                except Exception as e:
-                    logger.error(f"Exception caught setting session variables in login view: {e}", exc_info=True)
-                    # Handle the session error - maybe redirect to an error page
-                    messages.error(request, "An error occurred setting up your session.")
-                    return render(request, 'success.html', {'form': form})
+                # Store in session
+                request.session['username'] = username
+                request.session['phno'] = phno
+                request.session['token']=result['chat_id']
 
 
-                logger.info("chat id in login %s", token)
+                print("chat id in login",token)
                 return redirect('upload')
             else:
-                logger.info("check_chat_id status is False. Rendering success.html.")
-                messages.error(request, "Could not verify phone number. Please ensure you have started a chat with the bot.") # More specific message
                 return render(request, 'success.html', {'form': form})
         else:
-            logger.warning(f"Form errors: {form.errors}")
-            messages.error(request, "Invalid form submission. Please check the details.")
+            print(f"Form errors: {form.errors}")
+            # Render the same page with errors
             return render(request, 'success.html', {'form': form})
     else:
         form = ChatForm()
     return render(request, 'success.html', {'form': form})
-       
 
 def login_page(request):
     print(settings.key)
