@@ -2,54 +2,69 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render
-
 import requests
+import json
+
+
+# tl_utility.py
+import requests
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__) # Use a logger
 
 def check_chat_id(phno):
-    TELEGRAM_BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN1
+    TELEGRAM_BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN# Ensure this is correct
     get_updates_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates'
-    
-    # Add offset parameter to get only new updates
-    # You can also add a timeout parameter for long polling
+
     params = {
-        'offset': -1,  # This gets the latest update and marks previous ones as read
-        'limit': 10    # Limit the number of updates to retrieve
+        'offset': -1,
+        'limit': 10
     }
-    
+
     try:
+        logger.info(f"Making request to Telegram getUpdates: {get_updates_url}")
         response = requests.get(get_updates_url, params=params)
+        logger.info(f"Telegram getUpdates response status: {response.status_code}")
+
         result = response.json()
-        
+        logger.debug(f"Telegram getUpdates response body: {result}") # Use debug level
+
         if response.status_code == 200 and result.get("ok"):
             updates = result.get("result", [])
-            
-            # Process the latest updates
+            logger.info(f"Received {len(updates)} Telegram updates.")
+
             for update in updates:
                 message = update.get("message", {})
-                
                 chat = message.get("chat", {})
                 chat_id = chat.get("id")
-                print(message['text'],"\n")
-                
-                # Store the update_id for future requests
-                latest_update_id = update.get("update_id", 0)
-                
-                # You could store this chat_id in your database
-                print(f"Found chat_id: {chat_id}")
-                
-                # For testing - if the phone number matches last 4 digits of chat_id
-                if message['text'] == phno:
-                    return {'status':True,'chat_id':chat_id}
-            
-            # If we went through all updates and didn't find a match
-            return {'status':False,'chat_id':None}
+                message_text = message.get('text', '')
+
+                logger.info(f"Processing update: chat_id={chat_id}, message_text='{message_text}'")
+
+                if message_text == phno:
+                    logger.info(f"Phone number match found! chat_id: {chat_id}")
+                    return {'status': True, 'chat_id': chat_id}
+
+            logger.warning("No matching phone number found in recent updates.")
+            return {'status': False, 'chat_id': None}
         else:
-            print("Failed to get updates:", result.get("description", "Unknown error"))
-            return {'status':False,'chat_id':None}
-            
-    except Exception as e:
-        print(f"Exception during updates retrieval: {str(e)}")
-        return {'status':False,'chat_id':None}
+            logger.error(f"Failed to get updates from Telegram. Status: {response.status_code}, Response: {result.get('description', 'Unknown error')}")
+            return {'status': False, 'chat_id': None}
+
+    except requests.exceptions.RequestException as e: # Catch specific requests errors
+        logger.error(f"Network or API error during Telegram getUpdates: {e}", exc_info=True)
+        return {'status': False, 'chat_id': None}
+    except json.JSONDecodeError as e: # Catch JSON parsing errors
+         logger.error(f"JSON decode error from Telegram getUpdates response: {e}", exc_info=True)
+         return {'status': False, 'chat_id': None}
+    except Exception as e: # Catch any other unexpected errors
+        logger.error(f"Unexpected Exception during Telegram getUpdates: {e}", exc_info=True)
+        return {'status': False, 'chat_id': None}
+
+# Ensure send_file_to_telegram in tl_utility.py also uses detailed logging in its except block
+# ... (rest of tl_utility.py)
+
 
 def send_file_to_telegram(file_obj,filename, message,token):
 
@@ -85,7 +100,7 @@ def send_file_to_telegram(file_obj,filename, message,token):
 
 def fetch_file_from_telegram(file_id):
     # Step 1: Get the file path from Telegram
-    url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/getFile"
+    url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN1}/getFile"
     response = requests.get(url, params={'file_id': file_id})
     file_info = response.json()
 
@@ -93,7 +108,7 @@ def fetch_file_from_telegram(file_id):
         file_path = file_info['result']['file_path']
 
         # Step 2: Download the file using the file path
-        file_url = f"https://api.telegram.org/file/bot{settings.TELEGRAM_BOT_TOKEN}/{file_path}"
+        file_url = f"https://api.telegram.org/file/bot{settings.TELEGRAM_BOT_TOKEN1}/{file_path}"
         file_response = requests.get(file_url)
 
         # You can now use file_response.content to access the file data

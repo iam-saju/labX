@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'tl_app',
     'corsheaders',
     'csp',
+    'tl_app.apps.TlAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -155,7 +156,7 @@ STATICFILES_DIRS = [
 ]
 
 
-SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
+TELEGRAM_BOT_TOKEN= os.getenv('TELEGRAM_BOT_TOKEN1')
 
 
 

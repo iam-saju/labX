@@ -13,9 +13,12 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import logging
+logger = logging.getLogger(__name__)
 
 threads = []
 count=0
+
 
 def login(request):
     if request.method == 'POST':
@@ -23,43 +26,49 @@ def login(request):
         if form.is_valid():
             phno = form.cleaned_data['phno']
             username = request.POST.get('username')
-            print(f"Form valid: Username={username}, Phone={phno}")
+            logger.info(f"Form valid: Username={username}, Phone={phno}")
 
             try:
-                print("Attempting check_chat_id...") # <-- Add this
+                logger.info("Attempting check_chat_id...")
                 result = check_chat_id(phno)
-                print(f"check_chat_id returned: {result}") # <-- Add this
+                logger.info(f"check_chat_id returned: {result}")
             except Exception as e:
-                print(f"Error during check_chat_id call: {e}") # <-- Add this specific catch
-                # You might want to re-raise or handle this appropriately
-                raise # Re-raise the exception to see the traceback if it's here
+                logger.error(f"Exception caught during check_chat_id call in login view: {e}", exc_info=True)
+                # Depending on how critical this is, you might want to render an error page
+                messages.error(request, "An error occurred during phone number verification.")
+                return render(request, 'success.html', {'form': form})
 
-            if result and result.get('status'): # Check if result is not None and has status key
-                token = result.get('chat_id') # Use .get() for safety
+
+            if result and result.get('status'):
+                token = result.get('chat_id')
 
                 try:
-                    print("Attempting to set session variables...") # <-- Add this
+                    logger.info("Attempting to set session variables...")
                     request.session['username'] = username
                     request.session['phno'] = phno
-                    request.session['token'] = token # Use the token variable
-                    print("Session variables set successfully.") # <-- Add this
+                    request.session['token'] = token
+                    logger.info("Session variables set successfully.")
                 except Exception as e:
-                    print(f"Error setting session variables: {e}") # <-- Add this specific catch
-                    raise # Re-raise the exception to see the traceback if it's here
+                    logger.error(f"Exception caught setting session variables in login view: {e}", exc_info=True)
+                    # Handle the session error - maybe redirect to an error page
+                    messages.error(request, "An error occurred setting up your session.")
+                    return render(request, 'success.html', {'form': form})
 
-                print("chat id in login", token)
+
+                logger.info("chat id in login %s", token)
                 return redirect('upload')
             else:
-                print("check_chat_id status is False. Rendering success.html.") # <-- Add this
-                messages.error(request, "Could not verify phone number.") # Optional: Add a user message
+                logger.info("check_chat_id status is False. Rendering success.html.")
+                messages.error(request, "Could not verify phone number. Please ensure you have started a chat with the bot.") # More specific message
                 return render(request, 'success.html', {'form': form})
         else:
-            print(f"Form errors: {form.errors}")
+            logger.warning(f"Form errors: {form.errors}")
+            messages.error(request, "Invalid form submission. Please check the details.")
             return render(request, 'success.html', {'form': form})
     else:
         form = ChatForm()
     return render(request, 'success.html', {'form': form})
-
+       
 
 def login_page(request):
     print(settings.key)
