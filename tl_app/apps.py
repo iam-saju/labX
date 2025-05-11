@@ -14,7 +14,7 @@ class TlAppConfig(AppConfig):
             logger.info("tl_app AppConfig.ready() is running...")
             # Add any initialization code here that might fail
             # Example: checking for environment variables or external service connectivity
-            if not settings.TELEGRAM_BOT_TOKEN1:
+            if not settings.TELEGRAM_BOT_TOKEN:
                  logger.error("TELEGRAM_BOT_TOKEN1 environment variable is not set!")
                  # Consider raising an exception if the token is critical for startup
                  # raise EnvironmentError("TELEGRAM_BOT_TOKEN1 not configured")
