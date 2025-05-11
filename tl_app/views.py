@@ -17,39 +17,49 @@ from django.views.decorators.csrf import csrf_exempt
 threads = []
 count=0
 
-
 def login(request):
     if request.method == 'POST':
         form = ChatForm(request.POST)
         if form.is_valid():
             phno = form.cleaned_data['phno']
             username = request.POST.get('username')
-            
-            
-            
-            # Debug output
             print(f"Form valid: Username={username}, Phone={phno}")
-            result=check_chat_id(phno)
-            if result['status']:
-                token=result['chat_id']
 
-                # Store in session
-                request.session['username'] = username
-                request.session['phno'] = phno
-                request.session['token']=result['chat_id']
+            try:
+                print("Attempting check_chat_id...") # <-- Add this
+                result = check_chat_id(phno)
+                print(f"check_chat_id returned: {result}") # <-- Add this
+            except Exception as e:
+                print(f"Error during check_chat_id call: {e}") # <-- Add this specific catch
+                # You might want to re-raise or handle this appropriately
+                raise # Re-raise the exception to see the traceback if it's here
 
+            if result and result.get('status'): # Check if result is not None and has status key
+                token = result.get('chat_id') # Use .get() for safety
 
-                print("chat id in login",token)
+                try:
+                    print("Attempting to set session variables...") # <-- Add this
+                    request.session['username'] = username
+                    request.session['phno'] = phno
+                    request.session['token'] = token # Use the token variable
+                    print("Session variables set successfully.") # <-- Add this
+                except Exception as e:
+                    print(f"Error setting session variables: {e}") # <-- Add this specific catch
+                    raise # Re-raise the exception to see the traceback if it's here
+
+                print("chat id in login", token)
                 return redirect('upload')
             else:
+                print("check_chat_id status is False. Rendering success.html.") # <-- Add this
+                messages.error(request, "Could not verify phone number.") # Optional: Add a user message
                 return render(request, 'success.html', {'form': form})
         else:
             print(f"Form errors: {form.errors}")
-            # Render the same page with errors
             return render(request, 'success.html', {'form': form})
     else:
         form = ChatForm()
     return render(request, 'success.html', {'form': form})
+
 
 def login_page(request):
     print(settings.key)
