@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 from pathlib import Path
 import os
-import dj_database_url
+# import dj_database_url # Removed as we are not using a database
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,22 +31,24 @@ load_dotenv(os.path.join(BASE_DIR, 'cred.env'))
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['qubit.up.railway.app', '.railway.app', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.admin',          # Removed as we are not using a database
+    # 'django.contrib.auth',           # Removed as we are not using a database
+    # 'django.contrib.contenttypes',   # Removed as we are not using a database
+    # 'django.contrib.sessions',       # Removed as we are not using a database
+    # 'django.contrib.messages',       # Removed as we are not using a database
+    'django.contrib.staticfiles', # Keep this for static files
     'rest_framework',
     'tl_app',
     'corsheaders',
     'csp',
+    # 'social_django',                 # Removed as it depends on auth
 ]
 
 MIDDLEWARE = [
@@ -54,20 +56,19 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.contrib.sessions.middleware.SessionMiddleware', # Removed as we are not using sessions
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware', # Removed as we are not using auth
+    # 'social_django.middleware.SocialAuthExceptionMiddleware', # Removed as it depends on auth middleware
+    # 'django.contrib.messages.middleware.MessageMiddleware', # Removed as we are not using messages
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_ROOT = None
 
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-
-CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -80,10 +81,10 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                # 'django.contrib.auth.context_processors.auth', # Removed as we are not using auth
+                # 'django.contrib.messages.context_processors.messages', # Removed as we are not using messages
+                # 'social_django.context_processors.backends', # Removed as it depends on social auth
+                # 'social_django.context_processors.login_redirect', # Removed as it depends on social auth
             ],
         },
     },
@@ -94,33 +95,33 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# Removed the entire DATABASES dictionary as we are not using a database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+# Removed as they are related to django.contrib.auth
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 
 # Internationalization
@@ -145,14 +146,38 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Static files settings
 STATIC_URL = '/static/'
+STATIC_ROOT = '/app/staticfiles'
+
+# Add STATICFILES_DIRS back to tell collectstatic where to find static files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'tl_app/static'),
+    os.path.join(BASE_DIR,'tl_app','static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 TELEGRAM_BOT_TOKEN= os.getenv('TELEGRAM_BOT_TOKEN1')
+
+
 
 DATA_UPLOAD_MAX_NUMBER_FILES = 250
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 100 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000
+#github oAUTH
+
+
+# Production security settings
+# These might depend on your specific security needs without Django's auth/sessions
+# Consider if you still need CSRF/SESSION cookie secure if you are not using them.
+# SECURE_SSL_REDIRECT and SECURE_PROXY_SSL_HEADER are likely still needed.
+CSRF_COOKIE_SECURE = True # Keep if you use CSRF protection on forms
+SESSION_COOKIE_SECURE = True # Can likely remove if no sessions
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Fallback for static files in case the directory doesn't exist
+# Keep this as it's related to static file collection, not the database
+if not os.path.exists(STATIC_ROOT):
+    import tempfile
+    STATIC_ROOT = tempfile.gettempdir()
+    print(f"Warning: Using temporary directory for static files: {STATIC_ROOT}")
