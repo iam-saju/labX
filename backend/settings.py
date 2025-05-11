@@ -65,7 +65,6 @@ MIDDLEWARE = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
 WHITENOISE_ROOT = None
 
 CORS_ALLOW_ALL_ORIGINS = True 
