@@ -145,19 +145,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Static files settings
 STATIC_URL = '/static/'
-
-# Check if running in Railway container environment
-if os.path.exists('/app'):
-    STATIC_ROOT = '/app/staticfiles'
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'tl_app','static'),
-]
-
+STATIC_ROOT = '/app/staticfiles'
 
 
 SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
