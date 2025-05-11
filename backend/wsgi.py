@@ -1,16 +1,17 @@
-"""
-WSGI config for backend project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/
-"""
-
 import os
+import logging
+
 from django.core.wsgi import get_wsgi_application
+
+# Add logging here
+logging.basicConfig(level=logging.INFO)
+logging.info("WSGI application loading...")
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
-application = get_wsgi_application()
-
+try:
+    application = get_wsgi_application()
+    logging.info("WSGI application loaded successfully.")
+except Exception as e:
+    logging.error("Error loading WSGI application:", exc_info=True) # Log the traceback
+    raise # Re-raise the exception so Railway sees the failure
