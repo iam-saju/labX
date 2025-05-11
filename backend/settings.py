@@ -67,7 +67,7 @@ MIDDLEWARE = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_ROOT = None
 
-CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -145,8 +145,14 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Static files settings
 STATIC_URL = '/static/'
 STATIC_ROOT = '/app/staticfiles'
+
+# Add STATICFILES_DIRS back to tell collectstatic where to find static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'tl_app','static'),
+]
 
 
 SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
@@ -166,6 +172,8 @@ SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Fallback for static files in case the directory doesn't exist
+# This fallback should ideally not be hit if railway_setup.py creates /app/staticfiles
+# and the patching code in railway_setup.py is removed.
 if not os.path.exists(STATIC_ROOT):
     import tempfile
     STATIC_ROOT = tempfile.gettempdir()
