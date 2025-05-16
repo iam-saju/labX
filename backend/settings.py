@@ -164,8 +164,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'tl_app','static'),
 ]
 
+# --- IMPORTANT: Add the SECRET_KEY back here ---
+# Django's SECRET_KEY - MUST be set and kept secret
+# Read from a dedicated environment variable (recommended)
+# Use os.environ to make it mandatory, or os.getenv with a default for dev
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-TELEGRAM_BOT_TOKEN= os.getenv('TELEGRAM_BOT_TOKEN1') # Ensure this is set as an environment variable
+
+# Your Telegram Bot Token - Read from its environment variable
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN1')
+
 
 DATA_UPLOAD_MAX_NUMBER_FILES = 250
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB
