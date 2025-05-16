@@ -16,36 +16,73 @@ from django.views.decorators.csrf import csrf_exempt
 threads = []
 count=0
 
+# In tl_app/views.py
+
+# ... (keep all your imports and other functions)
 
 def login(request):
+    print("--- Inside login view ---") # Debug print
     if request.method == 'POST':
+        print("--- Handling POST request in login ---") # Debug print
         form = ChatForm(request.POST)
         if form.is_valid():
+            print("--- Login form is valid ---") # Debug print
             phno = form.cleaned_data['phno']
             username = request.POST.get('username')
-            # Debug output
-            print(f"Form valid: Username={username}, Phone={phno}")
-            result=check_chat_id(phno)
-            if result['status']:
-                token=result['chat_id']
+            print(f"--- Attempting check_chat_id for Username={username}, Phone={phno} ---") # Debug print
 
-                # Store in session
-                request.session['username'] = username
-                request.session['phno'] = phno
-                request.session['token']=result['chat_id']
+            try: # Add a try/except block to catch potential errors
+                result = check_chat_id(phno)
+                print(f"--- check_chat_id result: {result} ---") # Debug print
+
+                if result and result.get('status'): # Check result and status key
+                    token = result.get('chat_id')
+                    if token: # Ensure token is not None or empty if needed
+                         print(f"--- check_chat_id success, token: {token} ---") # Debug print
+                         # Store in session
+                         request.session['username'] = username
+                         request.session['phno'] = phno
+                         request.session['token'] = token # Store the actual token
+
+                         print("--- Redirecting to upload ---") # Debug print
+                         # messages.success(request, f"Welcome, {username}!") # Optional: Add a message
+                         return redirect('upload')
+                    else:
+                         print("--- check_chat_id success but returned no chat_id ---") # Debug print
+                         error_message = "Login failed: Could not retrieve chat ID."
+                         # messages.error(request, error_message) # Optional: Add a message
+                         return render(request, 'success.html', {'form': form, 'error': error_message})
+
+                else: # Failure path from check_chat_id
+                    print("--- check_chat_id status is False ---") # Debug print
+                    error_message = result.get('message', "Login failed: Invalid phone number or user.") # Get message from result if available
+                    # messages.error(request, error_message) # Optional: Add a message
+                    return render(request, 'success.html', {'form': form, 'error': error_message})
+
+            except Exception as e: # Catch any exception during check_chat_id or subsequent code
+                print(f"--- ERROR during login POST handling: {e} ---") # Debug print the error
+                # You might want to log the full traceback here in a real application
+                error_message = f"An unexpected error occurred during login: {e}"
+                # messages.error(request, error_message) # Optional: Add a message
+                # Render the page again with an error message
+                return render(request, 'success.html', {'form': form, 'error': error_message})
 
 
-                print("chat id in login",token)
-                return redirect('upload')
-            else:
-                return render(request, 'success.html')
-        else:
-            print(f"Form errors: {form.errors}")
+        else: # Form is not valid
+            print(f"--- Login form errors: {form.errors} ---") # Debug print form errors
             # Render the same page with errors
-            return render(request, 'success.html')
-    else:
+            # messages.error(request, "Please correct the errors below.") # Optional: Add a message
+            return render(request, 'success.html', {'form': form})
+
+    else: # Handling GET request
+        print("--- Handling GET request in login ---") # Debug print
         form = ChatForm()
-    return render(request, 'success.html')
+        # messages.info(request, "Please log in.") # Optional: Add a message
+        return render(request, 'success.html', {'form': form})
+
+# ... (keep thread functions, upload, logout functions)
+
+
 
 def login_page(request):
     print(settings.key)
