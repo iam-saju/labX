@@ -17,7 +17,7 @@ threads = []
 count=0
 
 # In tl_app/views.py
-
+print("--- views.py is being imported ---")
 # ... (keep all your imports and other functions)
 
 def login(request):
