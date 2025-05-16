@@ -38,14 +38,14 @@ def login(request):
                 print("chat id in login",token)
                 return redirect('upload')
             else:
-                return render(request, 'success.html', {'form': form})
+                return render(request, 'success.html')
         else:
             print(f"Form errors: {form.errors}")
             # Render the same page with errors
-            return render(request, 'success.html', {'form': form})
+            return render(request, 'success.html')
     else:
         form = ChatForm()
-    return render(request, 'success.html', {'form': form})
+    return render(request, 'success.html')
 
 def login_page(request):
     print(settings.key)
