@@ -54,19 +54,24 @@ INSTALLED_APPS = [
 
 # settings.py
 
+
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.contrib.sessions.middleware.SessionMiddleware', # <-- COMMENT THIS LINE OUT
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'social_django.middleware.SocialAuthExceptionMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware', # <-- COMMENT THIS LINE OUT
+    # 'django.contrib.messages.middleware.MessageMiddleware', # <-- Keep this line commented out
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_ROOT = None # Or set this if you have a specific root for static files in Whitenoise config
