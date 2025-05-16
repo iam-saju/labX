@@ -9,7 +9,6 @@ from django.conf import settings
 from .tl_utility import send_file_to_telegram,check_chat_id
 import json
 import time
-from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

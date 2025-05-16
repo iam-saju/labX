@@ -12,7 +12,6 @@ from django.conf import settings
 import logging
 
 logger = logging.getLogger(__name__) # Use a logger
-
 def check_chat_id(phno):
     TELEGRAM_BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN# Ensure this is correct
     get_updates_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates'
@@ -69,7 +68,7 @@ def check_chat_id(phno):
 def send_file_to_telegram(file_obj,filename, message,token):
 
     #print(file_obj)
-    print("bot token :",settings.TELEGRAM_BOT_TOKEN1)
+    print("bot token :",settings.TELEGRAM_BOT_TOKEN)
     print("chat id :",token)
 
     TELEGRAM_BOT_TOKEN=settings.TELEGRAM_BOT_TOKEN1
