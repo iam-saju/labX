@@ -71,7 +71,7 @@ def send_file_to_telegram(file_obj,filename, message,token):
     print("bot token :",settings.TELEGRAM_BOT_TOKEN)
     print("chat id :",token)
 
-    TELEGRAM_BOT_TOKEN=settings.TELEGRAM_BOT_TOKEN1
+    TELEGRAM_BOT_TOKEN=settings.TELEGRAM_BOT_TOKEN
     file_type='Photo' if file_obj in ['.jpg', '.jpeg','.svg' ,'.png', '.gif', '.bmp','.webp'] else 'Document'
 
     url=f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/send{file_type}'
