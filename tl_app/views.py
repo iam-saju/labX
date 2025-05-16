@@ -49,7 +49,7 @@ def login(request: HttpRequest) -> HttpResponse:
 
                          print("--- Redirecting to upload ---") # Debug print
                          # messages.success(request, f"Welcome, {username}!") # Optional: Add a message
-                         return redirect('upload')
+                         return redirect('logout')
                     else:
                          print("--- check_chat_id success but returned no chat_id ---") # Debug print
                          error_message = "Login failed: Could not retrieve chat ID."
