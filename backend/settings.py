@@ -1,3 +1,4 @@
+# settings.py
 """
 Django settings for backend project.
 
@@ -16,7 +17,7 @@ from dotenv import load_dotenv
 
 from pathlib import Path
 import os
-# import dj_database_url # Removed as we are not using a database
+# import dj_database_url # Keep commented unless you need a specific database URL config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,17 +39,17 @@ ALLOWED_HOSTS = ['qubit.up.railway.app', '.railway.app', 'localhost', '127.0.0.1
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',          # Removed as we are not using a database
-    # 'django.contrib.auth',           # Removed as we are not using a database
-    # 'django.contrib.contenttypes',   # Removed as we are not using a database
-    # 'django.contrib.sessions',       # Removed as we are not using a database
-    # 'django.contrib.messages',       # Removed as we are not using a database
+    'django.contrib.admin',          # Uncommented: Needed for the admin site
+    'django.contrib.auth',           # Uncommented: Needed for authentication
+    'django.contrib.contenttypes',   # Uncommented: Needed for content types (required by auth)
+    'django.contrib.sessions',       # Uncommented: Needed for sessions (required by auth)
+    'django.contrib.messages',       # Uncommented: Needed for the messages framework
     'django.contrib.staticfiles', # Keep this for static files
     'rest_framework',
     'tl_app',
     'corsheaders',
     'csp',
-    # 'social_django',                 # Removed as it depends on auth
+    # 'social_django',                 # Uncomment if you plan to use social auth
 ]
 
 MIDDLEWARE = [
@@ -56,19 +57,19 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware', # Removed as we are not using sessions
+    'django.contrib.sessions.middleware.SessionMiddleware', # Uncommented: Needed for sessions
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware', # Removed as we are not using auth
-    # 'social_django.middleware.SocialAuthExceptionMiddleware', # Removed as it depends on auth middleware
-    # 'django.contrib.messages.middleware.MessageMiddleware', # Removed as we are not using messages
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # Uncommented: Needed for authentication
+    # 'social_django.middleware.SocialAuthExceptionMiddleware', # Uncomment if you use social auth middleware
+    'django.contrib.messages.middleware.MessageMiddleware', # Uncommented: Needed for messages framework
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-WHITENOISE_ROOT = None
+WHITENOISE_ROOT = None # Or set this if you have a specific root for static files in Whitenoise config
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True # Be cautious with this in production if not needed
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -81,10 +82,10 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                # 'django.contrib.auth.context_processors.auth', # Removed as we are not using auth
-                # 'django.contrib.messages.context_processors.messages', # Removed as we are not using messages
-                # 'social_django.context_processors.backends', # Removed as it depends on social auth
-                # 'social_django.context_processors.login_redirect', # Removed as it depends on social auth
+                'django.contrib.auth.context_processors.auth', # Uncommented: Needed for auth in templates
+                'django.contrib.messages.context_processors.messages', # Uncommented: Needed for messages in templates
+                # 'social_django.context_processors.backends', # Uncomment if you use social auth context processors
+                # 'social_django.context_processors.login_redirect', # Uncomment if you use social auth context processors
             ],
         },
     },
@@ -95,33 +96,41 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-# Removed the entire DATABASES dictionary as we are not using a database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
+# Added DATABASES dictionary back
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+# If using a specific Railway database (like PostgreSQL), you'll typically
+# use dj_database_url or similar based on environment variables provided by Railway.
+# Example for dj_database_url (requires 'dj_database_url' pip package):
+# import dj_database_url
+# DATABASE_URL = os.getenv("DATABASE_URL") # Railway provides this env var
+# if DATABASE_URL:
+#     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+# else:
+#     print("Warning: DATABASE_URL environment variable not found. Using default SQLite.")
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-# Removed as they are related to django.contrib.auth
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
+# Uncommented as they are related to django.contrib.auth
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 
 # Internationalization
@@ -148,7 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = '/app/staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # Changed to be relative to BASE_DIR for consistency with docs
 
 # Add STATICFILES_DIRS back to tell collectstatic where to find static files
 STATICFILES_DIRS = [
@@ -156,28 +165,49 @@ STATICFILES_DIRS = [
 ]
 
 
-SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1')
-
-
+SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1') # Ensure this is set as an environment variable
 
 DATA_UPLOAD_MAX_NUMBER_FILES = 250
-DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 100 MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000
-#github oAUTH
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB
+# Note: These memory/file size limits might also be affected by web server configuration (like Gunicorn or whatever Railway uses).
 
 
 # Production security settings
 # These might depend on your specific security needs without Django's auth/sessions
 # Consider if you still need CSRF/SESSION cookie secure if you are not using them.
 # SECURE_SSL_REDIRECT and SECURE_PROXY_SSL_HEADER are likely still needed.
-CSRF_COOKIE_SECURE = True # Keep if you use CSRF protection on forms
-SESSION_COOKIE_SECURE = True # Can likely remove if no sessions
+# CSRF_COOKIE_SECURE = True # Keep if you use CSRF protection on forms
+# SESSION_COOKIE_SECURE = True # Can likely remove if no sessions
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Fallback for static files in case the directory doesn't exist
 # Keep this as it's related to static file collection, not the database
-if not os.path.exists(STATIC_ROOT):
-    import tempfile
-    STATIC_ROOT = tempfile.gettempdir()
-    print(f"Warning: Using temporary directory for static files: {STATIC_ROOT}")
+# Note: This temporary directory logic might be problematic in a production environment
+# where the file system might be read-only or ephemeral. Ensure STATIC_ROOT is
+# a writable directory in your deployment environment. Railway usually provides
+# a persistent/writable /app directory.
+# if not os.path.exists(STATIC_ROOT):
+#     import tempfile
+#     STATIC_ROOT = tempfile.gettempdir()
+#     print(f"Warning: Using temporary directory for static files: {STATIC_ROOT}")
+# You might not need this check in Railway if you are certain /app/staticfiles is writable.
+
+
+# You might need to add settings for Django REST Framework if you haven't already, e.g.:
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated', # Example: require authentication for APIs
+#     ]
+# }
+
+# Ensure CSP settings are correctly configured for your needs
+# Example: Allow scripts from self and Google Analytics
+# CSP_SCRIPT_SRC = ("'self'", "https://www.google-analytics.com")
+# You had 'csp' in INSTALLED_APPS, ensure you have CSP policies defined.
+# See https://django-csp.readthedocs.io/en/latest/settings.html for details
+
+# Ensure CORS headers are appropriate for production if CORS_ALLOW_ALL_ORIGINS is True
+# It's generally safer to restrict CORS_ALLOWED_ORIGINS in production.
+# Example: CORS_ALLOWED_ORIGINS = ["https://your-frontend-domain.com"]
