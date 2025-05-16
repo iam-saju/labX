@@ -1,11 +1,13 @@
+# In tl_app/views.py
+
 #threading
-from django.conf import settings
+# Removed duplicate import: from django.conf import settings
 import time
 from django.contrib import messages
 import threading
 from django.shortcuts import render,redirect,HttpResponse
 from .forms import UploadFileForm,ChatForm
-from django.conf import settings
+from django.conf import settings # Keep this one
 from .tl_utility import send_file_to_telegram,check_chat_id
 import json
 import time
@@ -13,12 +15,13 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+# Removed incorrect self-import: # from .views import upload,login,logout
+
 threads = []
 count=0
 
-# In tl_app/views.py
-print("--- views.py is being imported ---")
-# ... (keep all your imports and other functions)
+
+print("--- views.py is being imported ---") # Keep this print at the top
 
 def login(request):
     print("--- Inside login view ---") # Debug print
@@ -80,14 +83,12 @@ def login(request):
         # messages.info(request, "Please log in.") # Optional: Add a message
         return render(request, 'success.html', {'form': form})
 
-# ... (keep thread functions, upload, logout functions)
-
-
-
+# Note: login_page seems unused based on your urls.py
 def login_page(request):
-    print(settings.key)
+    # This view is not mapped in your provided urls.py
+    print(settings.key) # Note: settings.key is not a standard Django setting
     return render(request, 'tl.html')
-    
+
 
 def thread1(file,file_name,token):
     thread= threading.Thread(target=upload_file, args=(file, f"{file_name}",token))
@@ -113,31 +114,35 @@ def upload_file(file,message,token):
      # Debugging
 
 def upload(request):
-    print("--- Inside upload view ---") 
+    print("--- Inside upload view ---")
     message = None
     error = None
-    
- 
+
+
     if request.method == 'POST':
         print("--- Handling POST request in upload ---")
-        username = request.POST.get('username') or request.session.get('username')
-        phno = request.POST.get('phno') or request.session.get('phno')
+        # Note: Getting username/phno from POST is usually only on login.
+        # For upload POST, you likely only need it from the session.
+        username = request.session.get('username')
+        phno = request.session.get('phno')
         token=request.session.get('token')
 
-        # Make sure we store these in the session
-        request.session['username'] = username
-        request.session['phno'] = phno
-        request.session['token']=token
+        # Ensure session variables exist before proceeding with upload logic
+        if not username or not phno or not token:
+             print("--- Upload POST failed: Session data missing ---")
+             # Redirect back to login or show an error
+             messages.error(request, "Please log in to upload files.")
+             return redirect('login')
+
 
         print("CHAT ID IN UPLOAD PAGE",token)
-
-        print(username, phno)
+        print(f"User from session: {username}, {phno}")
 
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            uploaded_files = request.FILES.getlist('file_field') 
+            uploaded_files = request.FILES.getlist('file_field')
             length = len(uploaded_files)
-            
+
             threads = []
 
             start = time.perf_counter()
@@ -161,21 +166,25 @@ def upload(request):
             total_size = sum(f.size for f in uploaded_files)
             total_size = (total_size/1024)/1000
             speed = (total_size / duration)
-            
+
             message = "Files uploaded successfully!"
             print(f'{message} of size : {total_size:.2f} mb completed in {duration:.2f} seconds @ {speed:.2f} mbps')
         else:
             error = "Invalid form submission."
-    else:
-        print("--- Handling GET request in upload ---")
+            print(f"--- Upload POST failed: form errors: {form.errors} ---") # Add print for form errors in POST
+    else: # Handling GET request for /upload/
+        print("--- Handling GET request in upload ---") # This print should work
+        print("--- About to create UploadFileForm ---") # Add this print
         form = UploadFileForm()
+        print("--- UploadFileForm created successfully ---") # Add this print
 
+    print("--- About to render hi.html ---") # Add this print (runs for both GET and POST)
     return render(request, 'hi.html', {
         'form': form,
         'message': message,
         'error': error
     })
-# Replace this with your bot's API token
+# Replace this with your bot's API token # This comment is misplaced
 
 def logout(request):
     """
@@ -184,14 +193,14 @@ def logout(request):
     # Clear specific session variables
     if 'username' in request.session:
         del request.session['username']
-    
+
     if 'phno' in request.session:
         del request.session['phno']
-        
+
     # Optional: You can also flush the entire session if desired
     request.session.flush()
-    
+
     messages.success(request, "You have been logged out successfully!")
-    
+
     # Redirect to the login page
     return redirect('login')
