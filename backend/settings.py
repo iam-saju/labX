@@ -61,12 +61,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware', # <-- COMMENT THIS LINE OUT
+    'django.contrib.sessions.middleware.SessionMiddleware', # <-- COMMENT THIS LINE OUT
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'social_django.middleware.SocialAuthExceptionMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware', # <-- Keep this line commented out
+    'django.contrib.messages.middleware.MessageMiddleware', # <-- Keep this line commented out
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
