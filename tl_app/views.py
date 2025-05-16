@@ -131,11 +131,7 @@ def upload(request: HttpRequest) -> HttpResponse:
              print("--- Upload POST failed: Session data missing ---")
              # Redirect back to login or show an error
              messages.error(request, "Please log in to upload files.")
-             return redirect('login')
-
-
-        print("CHAT ID IN UPLOAD PAGE",token)
-        print(f"User from session: {username}, {phno}")
+             return redirect('upload')
 
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
