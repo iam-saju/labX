@@ -52,17 +52,19 @@ INSTALLED_APPS = [
     # 'social_django',                 # Uncomment if you plan to use social auth
 ]
 
+# settings.py
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'csp.middleware.CSPMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware', # Uncommented: Needed for sessions
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware', # Uncommented: Needed for authentication
-    # 'social_django.middleware.SocialAuthExceptionMiddleware', # Uncomment if you use social auth middleware
-    'django.contrib.messages.middleware.MessageMiddleware', # Uncommented: Needed for messages framework
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'social_django.middleware.SocialAuthExceptionMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware', # <-- COMMENT THIS LINE OUT
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
