@@ -127,7 +127,12 @@ def upload(request: HttpRequest) -> HttpResponse:
         token=request.session.get('token')
 
         # Ensure session variables exist before proceeding with upload logic
-     
+        if not username or not phno or not token:
+             print("--- Upload POST failed: Session data missing ---")
+             # Redirect back to login or show an error
+             messages.error(request, "Please log in to upload files.")
+             return redirect('up')
+
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_files = request.FILES.getlist('file_field')
