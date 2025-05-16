@@ -165,7 +165,7 @@ STATICFILES_DIRS = [
 ]
 
 
-SECRET_KEY = os.getenv('TELEGRAM_BOT_TOKEN1') # Ensure this is set as an environment variable
+TELEGRAM_BOT_TOKEN= os.getenv('TELEGRAM_BOT_TOKEN1') # Ensure this is set as an environment variable
 
 DATA_UPLOAD_MAX_NUMBER_FILES = 250
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB
