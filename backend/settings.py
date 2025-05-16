@@ -31,7 +31,7 @@ load_dotenv(os.path.join(BASE_DIR, 'cred.env'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['qubit.up.railway.app', '.railway.app', 'localhost', '127.0.0.1']
 
 
