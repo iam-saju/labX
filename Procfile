@@ -1,1 +1,1 @@
-mkdir -p /app/staticfiles && python railway_setup.py && python manage.py collectstatic --noinput && python manage.py migrate --noinput && DJANGO_SETTINGS_MODULE=backend.settings gunicorn -k eventlet backend.wsgi:application
+web: mkdir -p /app/staticfiles && python railway_setup.py && python manage.py collectstatic --noinput && python manage.py migrate --noinput && DJANGO_SETTINGS_MODULE=backend.settings gunicorn -k eventlet backend.wsgi:application
