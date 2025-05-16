@@ -12,7 +12,7 @@ from .tl_utility import send_file_to_telegram,check_chat_id
 import json
 import time
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
 # Removed incorrect self-import: # from .views import upload,login,logout
@@ -23,7 +23,7 @@ count=0
 
 print("--- views.py is being imported ---") # Keep this print at the top
 
-def login(request):
+def login(request: HttpRequest) -> HttpResponse:
     print("--- Inside login view ---") # Debug print
     if request.method == 'POST':
         print("--- Handling POST request in login ---") # Debug print
@@ -109,15 +109,14 @@ def thread3(file,file_name,token):
     return thread
 
 # Create a thread pool for parallel uploads
-def upload_file(file,message,token):
+def upload_file(file, message, token):
     response=send_file_to_telegram(file, file.name, message,token)
      # Debugging
 
-def upload(request):
+def upload(request: HttpRequest) -> HttpResponse:
     print("--- Inside upload view ---")
     message = None
     error = None
-
 
     if request.method == 'POST':
         print("--- Handling POST request in upload ---")
@@ -155,7 +154,7 @@ def upload(request):
                     threads.append(t2)
 
                     if f+2 < length:
-                        t3 = thread3(uploaded_files[f+2], uploaded_files[f+2].name,token)  # Fixed index from f+1 to f+2
+                        t3 = thread3(uploaded_files[f+2], uploaded_files[f+2].name,token)
                         threads.append(t3)
 
             for t in threads:
@@ -172,21 +171,26 @@ def upload(request):
         else:
             error = "Invalid form submission."
             print(f"--- Upload POST failed: form errors: {form.errors} ---") # Add print for form errors in POST
+
+        return render(request, 'hi.html', {
+            'form': form,
+            'message': message,
+            'error': error
+        })
     else: # Handling GET request for /upload/
         print("--- Handling GET request in upload ---") # This print should work
         print("--- About to create UploadFileForm ---") # Add this print
         form = UploadFileForm()
         print("--- UploadFileForm created successfully ---") # Add this print
-
-    print("--- About to render hi.html ---") # Add this print (runs for both GET and POST)
-    return render(request, 'hi.html', {
-        'form': form,
-        'message': message,
-        'error': error
-    })
+        print("--- About to render hi.html ---") 
+        return render(request, 'hi.html', {
+            'form': form,
+            'message': message,
+            'error': error
+        })
 # Replace this with your bot's API token # This comment is misplaced
 
-def logout(request):
+def logout(request: HttpRequest) -> HttpResponse:
     """
     Log out the user by clearing their session data
     """
