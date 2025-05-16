@@ -113,11 +113,13 @@ def upload_file(file,message,token):
      # Debugging
 
 def upload(request):
+    print("--- Inside upload view ---") 
     message = None
     error = None
     
  
     if request.method == 'POST':
+        print("--- Handling POST request in upload ---")
         username = request.POST.get('username') or request.session.get('username')
         phno = request.POST.get('phno') or request.session.get('phno')
         token=request.session.get('token')
@@ -165,6 +167,7 @@ def upload(request):
         else:
             error = "Invalid form submission."
     else:
+        print("--- Handling GET request in upload ---")
         form = UploadFileForm()
 
     return render(request, 'hi.html', {
