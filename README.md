@@ -1,56 +1,58 @@
-Qubit
-Turn Telegram into cloud storage for your files
-What is Qubit?
-Qubit lets you use Telegram to store and manage your files. Upload, find, and share files easily through Telegram.
-Main Features
+Qubit 
 
-Store unlimited files using Telegram
-Keep your files secure with Telegram's encryption
-Organize files in folders
-Search for files by name or type
-Works on all devices with Telegram
-Preview files before downloading
+Transform Telegram into your personal cloud storage
 
-Requirements
 
+🚀 Overview
+Qubit is a powerful wrapper for Telegram that converts your messaging app into a secure, unlimited cloud storage solution. Store, organize, and access your files from anywhere using the Telegram infrastructure you already trust.
+
+✨ Features
+Unlimited Storage: Leverage Telegram's generous file size limits without worrying about storage caps
+End-to-End Encryption: Your files remain secure with Telegram's encryption protocols
+Intuitive Organization: Tag, categorize, and search your files with our simple interface
+Cross-Platform: Access your files from any device that runs Telegram
+Media Preview: Preview images, videos, documents without downloading
+Version Control: Track changes and access previous versions of your files
+Shared Storage: Create shared folders with customizable permissions
+
+📋 Requirements
 Python 3.8+
 Telegram account
-Telegram API key and hash
+Telegram Bot API credentials
 
-Dependencies
-
-Django 5.2+
-python-telegram-bot
-requests
-pillow
-python-dotenv
-psycopg2-binary (for PostgreSQL)
-celery (for background tasks)
-redis (for caching)
-telethon
-
-Setup
-bash# Get the code
-git clone https://github.com/yourusername/qubit.git
-cd qubit
-
-# Install required packages
+# Install dependencies
 pip install -r requirements.txt
 
-# Set up your config
-cp .env.example .env
-# Edit .env with your Telegram API details
-How to Use
+🚀 Quick Start
+python# Start the Qubit service
+python manage.py runserver
 
-Start the server: python manage.py runserver
-Open in browser: http://127.0.0.1:8000/
-Log in with your Telegram account
-Upload and manage your files
+# Access the web interface at http://127.0.0.1:8000/
 
-Security
+🔒 Security
+No files are stored on our servers; everything lives in your Telegram account
+Optional additional encryption layer for sensitive files
 
-Files are stored in your Telegram account, not our servers
-Uses Telegram's built-in security
 
-License
-MIT License
+🛣️ Roadmap
+ Desktop application
+ Mobile applications
+ Command-line interface
+ File sharing enhancements
+ Automated backup scheduling
+
+🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+Fork the repository
+Create your feature branch (git checkout -b feature/amazing-feature)
+Commit your changes (git commit -m 'Add some amazing feature')
+Push to the branch (git push origin feature/amazing-feature)
+Open a Pull Request
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+📞 Contact
+mail : iamsajubabu@gmail.com
+x : x.com/saju0nx
